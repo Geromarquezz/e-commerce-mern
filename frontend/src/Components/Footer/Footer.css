@@ -3,7 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 50px;
+    gap: 50px 50px;
+    padding-top: 60px;
+}
+.footer hr {
+    width: 100vh;
+    border-radius: 10px;
+    background: #252525;
 }
 .footer-logo{
     display: flex;
