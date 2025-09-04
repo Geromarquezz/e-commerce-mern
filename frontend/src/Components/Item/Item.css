@@ -8,12 +8,12 @@
     display: flex;
     gap: 20px;
 }
-.item-prices-new {
+.item-price-new {
     color: #374151;
     font-size: 18px;
     font-weight: 600;
 }
-.item-prices-old {
+.item-price-old {
     color: #6b7280;
     text-decoration: line-through;
     font-size: 18px;
