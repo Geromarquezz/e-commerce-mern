@@ -13,6 +13,7 @@ const AddProduct = () => {
   })
 
   const imageHandler = (e) => {
+    console.log("Archivo seleccionado", e.target.files[0])
     setImage(e.target.files[0]);
   }
 
@@ -35,12 +36,9 @@ const AddProduct = () => {
       },
       body: formData, // Con el formato anterior
     }).then((resp) => resp.json()).then((data) => { responseData = data });
-    console.log("Upload response: ", responseData)
-
     if (responseData.success) 
     {
       product.image = responseData.image_url;
-      console.log(product);
       await fetch('http://localhost:4013/addproduct', {
         method: 'POST',
         headers: {

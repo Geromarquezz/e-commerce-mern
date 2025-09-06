@@ -1,11 +1,10 @@
-import { createContext, useState } from "react";
-import all_product from "../Components/Assets/all_product"
+import { createContext, useState, useEffect } from "react";
 
 export const ShopContext = createContext(null);
 
 const getDefaultCart = () => {
     let cart = {};
-    for (let index = 0; index < all_product.length + 1; index++) {
+    for (let index = 0; index < 300 + 1; index++) {
         cart[index] = 0;
     }
     return cart;
@@ -13,16 +12,63 @@ const getDefaultCart = () => {
 
 const ShopContextProvider = (props) => {
 
+    const [all_product,setAllProduct] = useState([]);
 
     const [cartItems, setCartItems] = useState(getDefaultCart());
+
+    
+    useEffect(()=>{
+        fetch("http://localhost:4013/allproducts")
+        .then((response)=>response.json())
+        .then((data)=>setAllProduct(data))
+
+        if (localStorage.getItem('auth-token')) {
+            fetch('http://localhost:4013/getcart',{
+                method:'POST',
+                headers:{
+                    Accept: 'application/json',
+                    'auth-token':`${localStorage.getItem('auth-token')}`,
+                    'Content-Type': 'application/json',
+                },
+                body:"",
+            }).then((response)=>response.json())
+            .then((data)=>setCartItems(data))
+            
+        }
+    },[])
     
     const addToCart = (itemId) => {
         setCartItems((prev) => ({...prev, [itemId]: prev[itemId]+1}));
-        console.log(cartItems);
+        if (localStorage.getItem('auth-token')){
+            fetch("http://localhost:4013/addtocart",{
+                method: 'POST',
+                headers: {
+                    Accept:'application/form-data',
+                    'auth-token':`${localStorage.getItem('auth-token')}`,
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({"item":itemId}),
+            })
+            .then((response)=>response.json())
+            .then((data)=>console.log(data))
+        }
     }
     
     const removeFromCart = (itemId) => {
         setCartItems((prev) => ({...prev, [itemId]: prev[itemId]-1}));
+        if(localStorage.getItem('auth-token')){
+            fetch("http://localhost:4013/removefromcart",{
+                method: 'POST',
+                headers: {
+                    Accept:'application/form-data',
+                    'auth-token':`${localStorage.getItem('auth-token')}`,
+                    'Content-Type':'application/json',
+                },
+                body:JSON.stringify({"item":itemId}),
+            })
+            .then((response)=>response.json())
+            .then((data)=>console.log(data))
+        }
     }
 
     const getTotalCartAmount = () => {
