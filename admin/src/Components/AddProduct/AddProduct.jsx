@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import './AddProduct.css'
 import upload_area from '../../assets/upload_area.svg'
+
+
 const AddProduct = () => {
+
 
   const [image, setImage] = useState(false);
   const [productDetails, setProductDetails] = useState({
@@ -29,7 +32,7 @@ const AddProduct = () => {
     let formData = new FormData(); // Se crea un form vacio
     formData.append('product', image); // Se le agrega la imagen
 
-    await fetch('http://localhost:4013/upload', { // Fetch al upload
+    await fetch(`http://localhost:4013/upload`, { // Fetch al upload
       method: 'POST', // Metodo post
       headers: { // Header como en postman
         Accept: 'application/json',
